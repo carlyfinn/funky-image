@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Funky Image</title>
+</head>
+
+<body>
+    <h2>Updating CSS Variables with
+        <span class='hl'>JS</span>
+    </h2>
+
+    <div class="controls">
+        <label for="spacing">Spacing:</label>
+        <input id="spacing" type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
+
+        <label for="blur">Blur:</label>
+        <input id="blur" type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
+
+        <label for="base">Base Color</label>
+        <input id="base" type="color" name="base" value="#F7D08A">
+    </div>
+
+    <img src="http://i66.tinypic.com/3160rw4.jpg">
+
+    <style>
+        /*CSS variable work by delaring them on some sort of element, in this casae going to delcare it on a root*/
+
+        :root {
+            --base: #F7D08A;
+            --spacing: 10px;
+            --blue: 10px;
+        }
+
+        img {
+            padding: var(--spacing);
+            /* -- is standard in CSS. var to call variable */
+            background: var(--base);
+            filter: blur(var(--blur));
+        }
+
+        .hl {
+            color: var(--base);
+            /* change JS text; highlighter not header */
+        }
+
+        /*
+      misc styles, nothing to do with CSS variables
+    */
+
+        body {
+            text-align: center;
+            background: #87B6A7;
+            color: #5B5941;
+            font-family: 'futura', sans-serif;
+            font-weight: 100;
+            font-size: 50px;
+        }
+
+        .controls {
+            margin-bottom: 50px;
+        }
+
+        input {
+            width: 100px;
+        }
+    </style>
+
+    <script>
+        const inputs = document.querySelectorAll('.controls input');
+        /* query selector gives you  a node list. selecting the spacing, blur, and color inputs */
+
+        function handleUpdate() {
+            const suffix = this.dataset.sizing || '';
+            /*dataset.sizing is the data attribute we made up with 'px'*/
+            document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
+
+        }
+
+        inputs.forEach(input => input.addEventListener('change', handleUpdate));
+        inputs.forEach(input => input.addEventListener('mousemove', handleUpdate));
+
+
+    </script>
+
+</body>
+
+</html>
